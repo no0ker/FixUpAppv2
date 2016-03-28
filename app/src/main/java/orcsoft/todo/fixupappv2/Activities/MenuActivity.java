@@ -13,7 +13,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 
@@ -57,7 +56,7 @@ public class MenuActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
 
         Bundle bundle = null;
-        if(getIntent().getExtras() != null){
+        if (getIntent().getExtras() != null) {
             bundle = getIntent().getExtras();
         } else {
             bundle = new Bundle();
@@ -153,7 +152,7 @@ public class MenuActivity extends AppCompatActivity implements NavigationView.On
         menuListener(itemId, new Bundle());
     }
 
-    private void menuListener(int itemId, Bundle bundle){
+    private void menuListener(int itemId, Bundle bundle) {
         Fragment fragment = null;
         if (itemId == R.id.menu_orders_active) {
             fragment = ActiveOrdersFragment_.builder().arg(bundle).build();
@@ -183,7 +182,7 @@ public class MenuActivity extends AppCompatActivity implements NavigationView.On
         } else if (itemId == R.id.menu_logout) {
             prefs.accessToken().put("");
             prefs.password().put("");
-            LogOnActivity_.intent(this).flags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK).start();
+            LogOnActivity_.intent(this).flags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK).start();
         }
 
         if (null != fragment) {
@@ -198,10 +197,5 @@ public class MenuActivity extends AppCompatActivity implements NavigationView.On
                         .commit();
             }
         }
-    }
-
-    @Click(R.id.fab)
-    protected void clickFabButton(){
-        startActivity(new Intent(this, OrdersMapActivity.class));
     }
 }

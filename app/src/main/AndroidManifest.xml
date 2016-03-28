@@ -52,7 +52,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".Activities.OrdersMapActivity"
+            android:name=".Activities.OrdersMapActivity_"
             android:label="@string/title_activity_orders_map">
 
         </activity>

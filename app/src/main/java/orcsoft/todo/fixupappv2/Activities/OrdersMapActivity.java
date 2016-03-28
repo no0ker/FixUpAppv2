@@ -10,8 +10,11 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.androidannotations.annotations.EActivity;
+
 import orcsoft.todo.fixupappv2.R;
 
+@EActivity
 public class OrdersMapActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
