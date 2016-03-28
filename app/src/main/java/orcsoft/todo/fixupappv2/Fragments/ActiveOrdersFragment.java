@@ -3,6 +3,7 @@ package orcsoft.todo.fixupappv2.Fragments;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -10,6 +11,7 @@ import android.view.MenuItem;
 import org.androidannotations.annotations.EFragment;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import orcsoft.todo.fixupappv2.Activities.OrdersMapActivity_;
@@ -80,7 +82,10 @@ public class ActiveOrdersFragment extends OrdersFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
         if(R.id.action_get_map == itemId){
-            OrdersMapActivity_.intent(this).start();
+            OrdersMapActivity_
+                    .intent(this)
+                    .parcelableArrayListExtra(Operations.ORDERS_KEY, (ArrayList<? extends Parcelable>) getOrdersFromCache())
+                    .start();
             return false;
         } else {
             return super.onOptionsItemSelected(item);
