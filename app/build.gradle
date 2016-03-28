@@ -59,11 +59,12 @@ dependencies {
     apt "org.androidannotations:androidannotations:$AAVersion"
     compile "org.androidannotations:androidannotations-api:$AAVersion"
     compile 'com.android.support:appcompat-v7:23.2.1'
-    compile 'com.android.support:design:23.2.0'
+    compile 'com.android.support:design:23.2.1'
     compile 'com.squareup.okhttp3:okhttp:3.1.2'
     compile 'com.google.code.gson:gson:2.6.1'
-    compile 'com.android.support:support-v4:23.2.0'
+    compile 'com.android.support:support-v4:23.2.1'
     compile 'org.apache.commons:commons-lang3:3.4'
     compile 'com.j256.ormlite:ormlite-core:4.48'
     compile 'com.j256.ormlite:ormlite-android:4.48'
+    compile 'com.google.android.gms:play-services:8.4.0'
 }
