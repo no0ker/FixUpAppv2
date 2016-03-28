@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="@string/menu_orders">
+        <menu>
+            <item
+                android:id="@+id/menu_orders_active"
+                android:icon="@drawable/ic_menu_share"
+                android:title="@string/menu_orders_active" />
+            <item
+                android:id="@+id/menu_orders_free"
+                android:icon="@drawable/ic_menu_send"
+                android:title="@string/menu_orders_free" />
+            <item
+                android:id="@+id/menu_orders_waiting"
+                android:icon="@drawable/ic_menu_share"
+                android:title="@string/menu_orders_waiting" />
+            <item
+                android:id="@+id/menu_orders_archive"
+                android:icon="@drawable/ic_menu_share"
+                android:title="@string/menu_orders_archive" />
+        </menu>
+    </item>
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/menu_preferences"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="@string/menu_preferences" />
+    </group>
+
+</menu>
