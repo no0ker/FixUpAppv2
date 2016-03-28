@@ -3,12 +3,16 @@ package orcsoft.todo.fixupappv2.Fragments;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import org.androidannotations.annotations.EFragment;
 
 import java.io.IOException;
 import java.util.List;
 
+import orcsoft.todo.fixupappv2.Activities.OrdersMapActivity_;
 import orcsoft.todo.fixupappv2.Entity.Container;
 import orcsoft.todo.fixupappv2.Entity.Order;
 import orcsoft.todo.fixupappv2.Exceptions.NetException;
@@ -65,5 +69,21 @@ public class ActiveOrdersFragment extends OrdersFragment {
     @Override
     protected List<Order> getOrdersFromCache() {
         return getOrdersFromCache(ordersCategory);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.active_orders_fragment_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemId = item.getItemId();
+        if(R.id.action_get_map == itemId){
+            OrdersMapActivity_.intent(this).start();
+            return false;
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
     }
 }
