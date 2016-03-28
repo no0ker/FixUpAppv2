@@ -1,3 +1,54 @@
 <resources>
-    <string name="app_name">FixUpAppv2</string>
+    <string name="app_name">FixUpApp</string>
+    <string name="title_activity_menu">FixUpApp</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="menu_orders">Заявки</string>
+    <string name="menu_orders_active">Активные</string>
+    <string name="menu_orders_free">Свободные</string>
+    <string name="menu_orders_waiting">Ожидают оплаты</string>
+    <string name="menu_orders_archive">Архив</string>
+
+    <string name="fragment_title_closing_orders">Закрытие заявки</string>
+
+
+    <string name="menu_preferences">Настройки</string>
+    <string name="menu_logout">Выход</string>
+
+    <string name="action_update">Обновить заявки</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--Preferences-->
+    <string name="pref_categ_auth">Авторизация</string>
+
+    <string name="pref_auth_login">pref_auth_login</string>
+    <string name="pref_auth_login_title">Логин</string>
+    <string name="pref_auth_login_summary">Введите свой логин или е-мейл</string>
+
+    <string name="pref_auth_pass">pref_auth_pass</string>
+    <string name="pref_auth_pass_title">Пароль</string>
+    <string name="pref_auth_pass_summary">Введите свой пароль от системы</string>
+
+    <string name="pref_categ_system">Системные настройки</string>
+    <string name="pref_system_url">pref_system_url</string>
+    <string name="pref_system_url_title">Сервер</string>
+    <string name="pref_system_url_summary">Введите адрес сервера</string>
+
+    <string name="button_inc">+</string>
+    <string name="button_dec">-</string>
+
+    <string name="button_add_product">Добавить товар</string>
+    <string name="button_add_service">Добавить услугу</string>
+    <string name="close_order">Закрыть заявку</string>
+
+    <string name="prompt_name">Введите логин</string>
+    <string name="prompt_pass">Введите пароль</string>
+    <string name="prompt_uri">Введите адрес портала</string>
+    <string name="button_login">Подключиться</string>
+
+    <string name="error_message_empty_items">Выберите какую-нибудь услугу или товар.</string>
+
 </resources>
