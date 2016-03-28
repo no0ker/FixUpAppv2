@@ -2,6 +2,7 @@ package orcsoft.todo.fixupappv2.Fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.Menu;
@@ -29,11 +30,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import orcsoft.todo.fixupappv2.Activities.OrdersMapActivity_;
 import orcsoft.todo.fixupappv2.Adapters.OrdersExpListAdapter;
 import orcsoft.todo.fixupappv2.DBHelpers.OrdersDatabaseHelper;
 import orcsoft.todo.fixupappv2.Entity.Container;
 import orcsoft.todo.fixupappv2.Entity.Order;
 import orcsoft.todo.fixupappv2.Exceptions.NetException;
+import orcsoft.todo.fixupappv2.Operations;
 import orcsoft.todo.fixupappv2.R;
 import orcsoft.todo.fixupappv2.Utils.NetHelper;
 import orcsoft.todo.fixupappv2.Utils.NetHelper_;
@@ -49,7 +52,9 @@ public abstract class OrdersFragment extends Fragment {
     protected AdapterView.OnItemLongClickListener onGroupLongClickListener;
 
     abstract protected List<Order> getOrders() throws IOException, NetException;
+
     abstract protected List<Order> getOrdersFromCache();
+
     abstract protected void onLongClickMakeAlertDialog(Order order);
 
     @ViewById(R.id.expandable_list_view)
@@ -125,9 +130,14 @@ public abstract class OrdersFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    public void onOptionsItemSelected(int itemId){
+    public void onOptionsItemSelected(int itemId) {
         if (itemId == R.id.action_update) {
             updateOrdersBg();
+        } else if (itemId == R.id.action_get_map) {
+            OrdersMapActivity_
+                    .intent(this)
+                    .parcelableArrayListExtra(Operations.ORDERS_KEY, (ArrayList<? extends Parcelable>) getOrdersFromCache())
+                    .start();
         }
     }
 
@@ -140,7 +150,7 @@ public abstract class OrdersFragment extends Fragment {
             orders = getOrders();
             ordersExpListAdapter.setOrders(orders);
             notifyDataSetChangedUI();
-        } catch (NetException e){
+        } catch (NetException e) {
             showErrorMessage(e);
         } catch (Exception e) {
             e.printStackTrace();
@@ -150,7 +160,7 @@ public abstract class OrdersFragment extends Fragment {
     }
 
     @UiThread
-    protected void showErrorMessage(NetException e){
+    protected void showErrorMessage(NetException e) {
         Snackbar.make(expandable_list_view, e.getMessage(), Snackbar.LENGTH_LONG).show();
     }
 
