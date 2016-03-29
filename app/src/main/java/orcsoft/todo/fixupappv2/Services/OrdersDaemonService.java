@@ -21,7 +21,6 @@ public class OrdersDaemonService extends Service {
 
     @Override
     public void onCreate() {
-
         super.onCreate();
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
     }

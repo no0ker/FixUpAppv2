@@ -41,6 +41,10 @@ public class BgJob extends Job {
         OpenHelperManager.releaseHelper();
         ordersDatabaseHelper = null;
 
+
+
+
+
         return null;
     }
 }
