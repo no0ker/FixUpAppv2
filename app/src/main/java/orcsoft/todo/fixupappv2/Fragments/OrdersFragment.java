@@ -74,7 +74,6 @@ public abstract class OrdersFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ordersExpListAdapter = new OrdersExpListAdapter(getActivity().getApplicationContext(), orders);
-        ordersExpListAdapter.setOrdersCategory(ordersCategory);
         onGroupLongClickListener = new OnOrdersGroupClickListener();
         netHelper = NetHelper_.getInstance_(getContext());
         setHasOptionsMenu(true);
@@ -152,6 +151,7 @@ public abstract class OrdersFragment extends Fragment {
         try {
             orders = getOrders();
             ordersExpListAdapter.setOrders(orders);
+            ordersExpListAdapter.setOrdersCategory(ordersCategory);
             notifyDataSetChangedUI();
         } catch (NetException e) {
             showErrorMessage(e);

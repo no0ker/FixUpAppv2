@@ -128,7 +128,6 @@ public class OrdersExpListAdapter extends BaseExpandableListAdapter {
 
     private void applyCategoryRules(View convertView) {
         if(Order.Category.DONE.equals(ordersCategory)){
-            convertView.findViewById(R.id.list_date_time_works).setVisibility(View.GONE);
             convertView.findViewById(R.id.list_exp_view).setVisibility(View.GONE);
         }
     }
