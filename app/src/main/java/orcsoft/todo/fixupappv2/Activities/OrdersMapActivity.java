@@ -1,6 +1,7 @@
 package orcsoft.todo.fixupappv2.Activities;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Address;
@@ -18,6 +19,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EActivity;
 
 import java.io.IOException;
@@ -26,6 +28,7 @@ import java.util.List;
 import orcsoft.todo.fixupappv2.Entity.Order;
 import orcsoft.todo.fixupappv2.Operations;
 import orcsoft.todo.fixupappv2.R;
+import orcsoft.todo.fixupappv2.Utils.NetHelper_;
 
 @EActivity
 public class OrdersMapActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -55,7 +58,7 @@ public class OrdersMapActivity extends FragmentActivity implements OnMapReadyCal
 
     private void initCamera() throws IOException {
         Geocoder geocoder = new Geocoder(this);
-
+        final Context context = getApplicationContext();
         Address saratov = geocoder.getFromLocationName("Саратов", 1).get(0);
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(new LatLng(saratov.getLatitude(), saratov.getLongitude()))
@@ -93,15 +96,12 @@ public class OrdersMapActivity extends FragmentActivity implements OnMapReadyCal
                             .setPositiveButton("Ага", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    for (Order currentOrder : orders) {
-                                        if (currentOrder.getAddress().equals(address)) {
-                                            OrderClosingActivity_
-                                                    .intent(getApplicationContext())
-                                                    .extra(Operations.ORDER_ENTITY, currentOrder)
-                                                    .flags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                                    .start();
-                                        }
-                                    }
+                                    Order currentOrder = getOrder(address);
+                                    OrderClosingActivity_
+                                            .intent(context)
+                                            .extra(Operations.ORDER_ENTITY, currentOrder)
+                                            .flags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                            .start();
                                 }
                             })
                             .setNegativeButton("Неа", new DialogInterface.OnClickListener() {
@@ -112,10 +112,29 @@ public class OrdersMapActivity extends FragmentActivity implements OnMapReadyCal
                             });
                     builder.create().show();
                 } else if ("F".equals(markerCategory)) {
-
+                    // TODO нужно вызвать MenuActivity и вызвать там long Click
                 }
                 return false;
             }
         });
+    }
+
+    private Order getOrder(String address) {
+        for (Order currentOrder : orders) {
+            if (currentOrder.getAddress().equals(address)) {
+                return currentOrder;
+            }
+        }
+        return null;
+    }
+
+    @Background
+    protected void setAccept(int orderId, String time) {
+        try {
+            Context context = getApplicationContext();
+            NetHelper_.getInstance_(context).setAccept(orderId, time);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

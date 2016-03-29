@@ -19,8 +19,6 @@
 
     <string name="action_update">Обновить заявки</string>
     <string name="action_get_map">Карта</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!--Preferences-->
     <string name="pref_categ_auth">Авторизация</string>
