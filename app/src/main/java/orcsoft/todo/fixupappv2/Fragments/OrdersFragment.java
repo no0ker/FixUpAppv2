@@ -139,6 +139,7 @@ public abstract class OrdersFragment extends Fragment {
             OrdersMapActivity_
                     .intent(this)
                     .parcelableArrayListExtra(Operations.ORDERS_KEY, (ArrayList<? extends Parcelable>) getOrdersFromCache())
+                    .extra(Operations.CATEGORY_KEY, ordersCategory)
                     .start();
         }
     }

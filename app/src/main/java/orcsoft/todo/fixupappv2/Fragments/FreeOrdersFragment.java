@@ -4,6 +4,8 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.widget.TimePicker;
 
 import org.androidannotations.annotations.Background;
@@ -93,5 +95,10 @@ public class FreeOrdersFragment extends OrdersFragment {
     @Override
     protected List<Order> getOrdersFromCache() {
         return getOrdersFromCache(ordersCategory);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.active_orders_fragment_menu, menu);
     }
 }
