@@ -63,9 +63,6 @@ public abstract class OrdersFragment extends Fragment {
     @ViewById(R.id.fragments_progress_bar)
     protected ProgressBar progressBar;
 
-//    @RootContext
-//    Context context;
-
     public static interface OnFragmentInteractionListener {
         void onFragmentInteraction(Container container);
     }
