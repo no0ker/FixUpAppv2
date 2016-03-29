@@ -13,6 +13,17 @@
         android:textSize="@dimen/medium_text" />
 
     <TextView
+        android:id="@+id/list_cost"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:text="цена"
+        android:textColor="@android:color/holo_orange_dark"
+        android:textSize="@dimen/medium_text"
+        android:visibility="gone" />
+
+
+    <TextView
         android:id="@+id/list_date_time_works"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

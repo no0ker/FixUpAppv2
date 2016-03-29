@@ -85,7 +85,9 @@ public class OrdersExpListAdapter extends BaseExpandableListAdapter {
                 StringEscapeUtils.unescapeHtml4(
                         currentOrder.getAddress()));
 
-        // datetimeWorksView
+                
+        //-------------------------------------------------------------------------
+        // list_date_time_works
         TextView datetimeWorksView = (TextView) convertView.findViewById(R.id.list_date_time_works);
         String datetimeWorks = currentOrder.getDatetime_works();
         if(StringUtils.isEmpty(datetimeWorks)){
@@ -93,7 +95,23 @@ public class OrdersExpListAdapter extends BaseExpandableListAdapter {
         } else {
             datetimeWorksView.setText(datetimeWorks.substring(0, datetimeWorks.length() - 3));
         }
-        // end
+        // end of list_date_time_works
+        //-------------------------------------------------------------------------
+
+
+        //-------------------------------------------------------------------------
+        // list_cost
+        TextView costView = (TextView) convertView.findViewById(R.id.list_cost);
+        String cost = currentOrder.getCost();
+        if(StringUtils.isEmpty(cost)){
+            costView.setVisibility(View.GONE);
+        } else {
+            costView.setText(
+                    MessageFormat.format("{0) р.", currentOrder.getCost())
+            );
+        }
+        // end of list_cost
+        //-------------------------------------------------------------------------
 
         ((TextView) convertView.findViewById(R.id.list_name)).setText(
                 MessageFormat.format("{0}  {1}", currentOrder.getClient_lastname(), currentOrder.getClient_firstname())
