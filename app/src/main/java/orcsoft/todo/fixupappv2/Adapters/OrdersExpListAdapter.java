@@ -8,7 +8,9 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,27 +64,40 @@ public class OrdersExpListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+        Order currentOrder = orders.get(groupPosition);
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.fragment_orders_group, null);
         }
 
-        if (isExpanded){
-            //Изменяем что-нибудь, если текущая Group раскрыта
+        if (isExpanded) {
+            convertView.findViewById(R.id.list_exp_view).setVisibility(View.VISIBLE);
+            ((TextView) convertView.findViewById(R.id.list_comment)).setText(currentOrder.getComment());
+            ((TextView) convertView.findViewById(R.id.list_date_time_wishes)).setText(
+                    MessageFormat.format("{0}  {1}", currentOrder.getDate_wish(), currentOrder.getInterval_title())
+            );
+        } else {
+            convertView.findViewById(R.id.list_exp_view).setVisibility(View.GONE);
         }
-        else{
-            //Изменяем что-нибудь, если текущая Group скрыта
-        }
-
-        Order currentOrder = orders.get(groupPosition);
 
         TextView address = (TextView) convertView.findViewById(R.id.list_address);
         address.setText(
                 StringEscapeUtils.unescapeHtml4(
-                    currentOrder.getAddress()));
-        TextView date_time = (TextView) convertView.findViewById(R.id.list_date_time);
-//        String date_time_string = currentOrder.getDatetime_works();
-//        date_time.setText(date_time_string.substring(0, date_time_string.length() - 3));
+                        currentOrder.getAddress()));
+
+        // datetimeWorksView
+        TextView datetimeWorksView = (TextView) convertView.findViewById(R.id.list_date_time_works);
+        String datetimeWorks = currentOrder.getDatetime_works();
+        if(StringUtils.isEmpty(datetimeWorks)){
+            datetimeWorksView.setVisibility(View.GONE);
+        } else {
+            datetimeWorksView.setText(datetimeWorks.substring(0, datetimeWorks.length() - 3));
+        }
+        // end
+
+        ((TextView) convertView.findViewById(R.id.list_name)).setText(
+                MessageFormat.format("{0}  {1}", currentOrder.getClient_lastname(), currentOrder.getClient_firstname())
+        );
 
         return convertView;
     }

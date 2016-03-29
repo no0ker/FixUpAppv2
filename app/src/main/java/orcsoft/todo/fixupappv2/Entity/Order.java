@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 @DatabaseTable(tableName = "orders")
 public class Order implements Parcelable {
     public static DateFormat SDF = new SimpleDateFormat("yyyy-MM-dd");
+    public static DateFormat SDF_WITH_HOURS = new SimpleDateFormat("yyyy-MM-dd hh:mm");
     public static DateFormat SDF_DATETIME_WORKS = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
     public static DateFormat SDF_DATE_TIME = new SimpleDateFormat("dd MMMM hh:mm");
 

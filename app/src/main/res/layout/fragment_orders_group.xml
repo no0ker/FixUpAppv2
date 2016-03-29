@@ -13,13 +13,49 @@
         android:textSize="@dimen/medium_text" />
 
     <TextView
-        android:id="@+id/list_date_time"
+        android:id="@+id/list_date_time_works"
         android:layout_width="match_parent"
-        android:layout_height ="wrap_content"
+        android:layout_height="wrap_content"
         android:gravity="right"
         android:text="время"
         android:textColor="@android:color/black"
         android:textSize="@dimen/medium_text" />
+
+    <TextView
+        android:id="@+id/list_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:text="имя"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/medium_text" />
+
+    <LinearLayout
+        android:id="@+id/list_exp_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/list_date_time_wishes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:text="хочет"
+            android:textColor="@android:color/holo_green_dark"
+            android:textSize="@dimen/medium_text" />
+
+        <TextView
+            android:id="@+id/list_comment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:text="комментарий"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/medium_text" />
+
+    </LinearLayout>
 
 
 </LinearLayout>
