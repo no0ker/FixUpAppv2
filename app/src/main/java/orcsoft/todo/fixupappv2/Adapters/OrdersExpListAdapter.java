@@ -20,6 +20,7 @@ import orcsoft.todo.fixupappv2.R;
 public class OrdersExpListAdapter extends BaseExpandableListAdapter {
     private Context mContext;
     private List<Order> orders;
+    private Order.Category ordersCategory;
 
     public OrdersExpListAdapter(Context mContext, List<Order> orders) {
         this.mContext = mContext;
@@ -85,7 +86,7 @@ public class OrdersExpListAdapter extends BaseExpandableListAdapter {
                 StringEscapeUtils.unescapeHtml4(
                         currentOrder.getAddress()));
 
-                
+
         //-------------------------------------------------------------------------
         // list_date_time_works
         TextView datetimeWorksView = (TextView) convertView.findViewById(R.id.list_date_time_works);
@@ -94,6 +95,7 @@ public class OrdersExpListAdapter extends BaseExpandableListAdapter {
             datetimeWorksView.setVisibility(View.GONE);
         } else {
             datetimeWorksView.setText(datetimeWorks.substring(0, datetimeWorks.length() - 3));
+            datetimeWorksView.setVisibility(View.VISIBLE);
         }
         // end of list_date_time_works
         //-------------------------------------------------------------------------
@@ -107,17 +109,28 @@ public class OrdersExpListAdapter extends BaseExpandableListAdapter {
             costView.setVisibility(View.GONE);
         } else {
             costView.setText(
-                    MessageFormat.format("{0) р.", currentOrder.getCost())
+                    MessageFormat.format("{0} р.", currentOrder.getCost())
             );
+            costView.setVisibility(View.VISIBLE);
         }
         // end of list_cost
         //-------------------------------------------------------------------------
+
 
         ((TextView) convertView.findViewById(R.id.list_name)).setText(
                 MessageFormat.format("{0}  {1}", currentOrder.getClient_lastname(), currentOrder.getClient_firstname())
         );
 
+        applyCategoryRules(convertView);
+
         return convertView;
+    }
+
+    private void applyCategoryRules(View convertView) {
+        if(Order.Category.DONE.equals(ordersCategory)){
+            convertView.findViewById(R.id.list_date_time_works).setVisibility(View.GONE);
+            convertView.findViewById(R.id.list_exp_view).setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -137,5 +150,9 @@ public class OrdersExpListAdapter extends BaseExpandableListAdapter {
 
     public List<Order> getOrders() {
         return orders;
+    }
+
+    public void setOrdersCategory(Order.Category ordersCategory) {
+        this.ordersCategory = ordersCategory;
     }
 }

@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="right"
-        android:text="адрес адрес адрес"
+        android:text="адрес"
         android:textColor="@android:color/holo_blue_dark"
         android:textSize="@dimen/medium_text" />
 
@@ -19,8 +19,7 @@
         android:gravity="right"
         android:text="цена"
         android:textColor="@android:color/holo_orange_dark"
-        android:textSize="@dimen/medium_text"
-        android:visibility="gone" />
+        android:textSize="@dimen/medium_text" />
 
 
     <TextView
@@ -45,8 +44,7 @@
         android:id="@+id/list_exp_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone">
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/list_date_time_wishes"

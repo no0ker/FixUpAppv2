@@ -22,11 +22,11 @@ import orcsoft.todo.fixupappv2.R;
 
 @EFragment(R.layout.fragment_orders)
 public class FreeOrdersFragment extends OrdersFragment {
-    Order.Category ordersCategory = Order.Category.FREE;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ordersCategory = Order.Category.FREE;
     }
 
     @Background

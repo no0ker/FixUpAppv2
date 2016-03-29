@@ -47,14 +47,13 @@ public abstract class OrdersFragment extends Fragment {
     private List<Order> orders = Collections.emptyList();
     private OrdersExpListAdapter ordersExpListAdapter;
 
+    protected Order.Category ordersCategory;
     protected OnFragmentInteractionListener mListener;
     protected NetHelper netHelper;
     protected AdapterView.OnItemLongClickListener onGroupLongClickListener;
 
     abstract protected List<Order> getOrders() throws IOException, NetException;
-
     abstract protected List<Order> getOrdersFromCache();
-
     abstract protected void onLongClickMakeAlertDialog(Order order);
 
     @ViewById(R.id.expandable_list_view)
@@ -75,9 +74,16 @@ public abstract class OrdersFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ordersExpListAdapter = new OrdersExpListAdapter(getActivity().getApplicationContext(), orders);
+        ordersExpListAdapter.setOrdersCategory(ordersCategory);
         onGroupLongClickListener = new OnOrdersGroupClickListener();
-        setHasOptionsMenu(true);
         netHelper = NetHelper_.getInstance_(getContext());
+        setHasOptionsMenu(true);
+        if (getArguments() != null) {
+            Bundle bundle = getArguments();
+            if (Operations.YES.equals(bundle.getString(Operations.WITH_RELOAD))) {
+                onOptionsItemSelected(R.id.action_update);
+            }
+        }
     }
 
     @AfterViews

@@ -19,17 +19,11 @@ import orcsoft.todo.fixupappv2.R;
 
 @EFragment(R.layout.fragment_orders)
 public class ActiveOrdersFragment extends OrdersFragment {
-    Order.Category ordersCategory = Order.Category.ACTIVE;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            Bundle bundle = getArguments();
-            if (Operations.YES.equals(bundle.getString(Operations.WITH_RELOAD))) {
-                onOptionsItemSelected(R.id.action_update);
-            }
-        }
+        ordersCategory = Order.Category.ACTIVE;
     }
 
     @Override

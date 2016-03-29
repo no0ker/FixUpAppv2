@@ -1,5 +1,7 @@
 package orcsoft.todo.fixupappv2.Fragments;
 
+import android.os.Bundle;
+
 import org.androidannotations.annotations.EFragment;
 
 import java.io.IOException;
@@ -11,7 +13,12 @@ import orcsoft.todo.fixupappv2.R;
 
 @EFragment(R.layout.fragment_orders)
 public class ArchiveOrderFragments extends OrdersFragment{
-    Order.Category ordersCategory = Order.Category.ARCHIVE;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ordersCategory = Order.Category.ARCHIVE;
+    }
 
     @Override
     protected void onLongClickMakeAlertDialog(Order order) {
