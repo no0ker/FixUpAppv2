@@ -34,9 +34,14 @@
     <string name="pref_auth_pass_summary">Введите свой пароль от системы</string>
 
     <string name="pref_categ_system">Системные настройки</string>
+
     <string name="pref_system_url">pref_system_url</string>
     <string name="pref_system_url_title">Сервер</string>
     <string name="pref_system_url_summary">Введите адрес сервера</string>
+
+    <string name="pref.system.bg">pref_system_bg</string>
+    <string name="pref_system_bg_title">Фоновое слежение за заявками</string>
+    <string name="pref_system_bg_summary">Может негативно влиять на заряд батареи!</string>
 
     <string name="button_inc">+</string>
     <string name="button_dec">-</string>

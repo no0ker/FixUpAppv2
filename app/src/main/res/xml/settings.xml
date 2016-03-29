@@ -1,23 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory android:title="@string/pref_categ_auth">
-        <EditTextPreference
-            android:defaultValue="rustam@mail.ru"
-            android:key="@string/pref_auth_login"
-            android:summary="@string/pref_auth_login_summary"
-            android:title="@string/pref_auth_login_title" />
-        <EditTextPreference
-            android:defaultValue="123"
-            android:key="@string/pref_auth_pass"
-            android:password="true"
-            android:summary="@string/pref_auth_pass_summary"
-            android:title="@string/pref_auth_pass_title" />
-    </PreferenceCategory>
     <PreferenceCategory android:title="@string/pref_categ_system">
-        <EditTextPreference
-            android:defaultValue="http://fixup.forteapps.com/api"
-            android:key="@string/pref_system_url"
-            android:summary="@string/pref_system_url_summary"
-            android:title="@string/pref_system_url_title" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="@string/pref.system.bg"
+            android:summary="@string/pref_system_bg_summary"
+            android:title="@string/pref_system_bg_title" />
     </PreferenceCategory>
 </PreferenceScreen>

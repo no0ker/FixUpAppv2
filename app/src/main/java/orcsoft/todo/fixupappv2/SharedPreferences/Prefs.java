@@ -15,4 +15,6 @@ public interface Prefs {
 
     @DefaultString("http://fixup.forteapps.com/api")
     public String server();
+
+    public int jobId();
 }
