@@ -79,46 +79,6 @@ public class OrdersMapActivity extends FragmentActivity implements OnMapReadyCal
             }
         }
 
-//        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-//            @Override
-//            public boolean onMarkerClick(Marker marker) {
-//                String markerCategory = marker.getTitle().substring(0, 1);
-//                final String address = marker.getTitle().substring(2);
-//                Order currentOrder = getOrder(address);
-//
-//                AlertDialog.Builder builder = new AlertDialog.Builder(OrdersMapActivity.this);
-//
-//                if ("A".equals(markerCategory)) {
-//                    builder.setTitle("Операции")
-//                            .setMessage("Изволите закрыть заявку?")
-//                            .setTitle(marker.getTitle())
-//                            .setPositiveButton("Ага", new DialogInterface.OnClickListener() {
-//                                @Override
-//                                public void onClick(DialogInterface dialog, int which) {
-//                                    OrderClosingActivity_
-//                                            .intent(context)
-//                                            .extra(Operations.ORDER_ENTITY, currentOrder)
-//                                            .flags(Intent.FLAG_ACTIVITY_NEW_TASK)
-//                                            .start();
-//                                }
-//                            })
-//                            .setNegativeButton("Неа", new DialogInterface.OnClickListener() {
-//                                @Override
-//                                public void onClick(DialogInterface dialog, int which) {
-//                                    dialog.cancel();
-//                                }
-//                            });
-//                    builder.create().show();
-//                } else if ("F".equals(markerCategory)) {
-//                    // TODO нужно вызвать MenuActivity и вызвать там long Click
-//                    MenuActivity_.intent(context)
-//                            .extra(Operations.MENU_ACTIVITY_KEY_CHANGE_FRAGMENT_ID, R.id.menu_orders_free)
-//                            .extra(Operations.ORDER_FRAGMENT_KEY_LONG_CLICK_ORDER_ID, currentOrder.getId())
-//                            .start();
-//                }
-//                return false;
-//            }
-//        });
         mMap.setOnInfoWindowLongClickListener(new GoogleMap.OnInfoWindowLongClickListener() {
             @Override
             public void onInfoWindowLongClick(Marker marker) {
@@ -128,6 +88,12 @@ public class OrdersMapActivity extends FragmentActivity implements OnMapReadyCal
                 if ("F".equals(markerCategory)) {
                     MenuActivity_.intent(context)
                             .extra(Operations.MENU_ACTIVITY_KEY_CHANGE_FRAGMENT_ID, R.id.menu_orders_free)
+                            .extra(Operations.ORDER_FRAGMENT_KEY_LONG_CLICK_ORDER_ID, currentOrder.getId())
+                            .flags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            .start();
+                } else  if ("A".equals(markerCategory)){
+                    MenuActivity_.intent(context)
+                            .extra(Operations.MENU_ACTIVITY_KEY_CHANGE_FRAGMENT_ID, R.id.menu_orders_active)
                             .extra(Operations.ORDER_FRAGMENT_KEY_LONG_CLICK_ORDER_ID, currentOrder.getId())
                             .flags(Intent.FLAG_ACTIVITY_NEW_TASK)
                             .start();
