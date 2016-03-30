@@ -1,12 +1,10 @@
 package orcsoft.todo.fixupappv2;
 
-import android.app.Application;
-
 import com.evernote.android.job.JobManager;
 
 import orcsoft.todo.fixupappv2.BackgroundWork.BgJobCreator;
 
-public class App extends Application{
+public class App extends android.support.multidex.MultiDexApplication{
     @Override
     public void onCreate() {
         super.onCreate();
