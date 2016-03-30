@@ -57,7 +57,7 @@ public class BgJob extends Job {
         PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         ++a;
-        Notification notification = builder.setSmallIcon(R.drawable.ic_menu_camera)
+        Notification notification = builder.setSmallIcon(R.drawable.ic_alarm_black_24dp)
 //                .setLargeIcon(R.drawable.ic_menu_manage)
                 .setTicker("ticker text")
                 .setContentText("content text" + a)
