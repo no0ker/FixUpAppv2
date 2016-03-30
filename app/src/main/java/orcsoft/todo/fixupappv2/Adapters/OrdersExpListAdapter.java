@@ -120,7 +120,7 @@ public class OrdersExpListAdapter extends BaseExpandableListAdapter {
         ((TextView) convertView.findViewById(R.id.list_name)).setText(
                 MessageFormat.format("{0}  {1}", currentOrder.getClient_lastname(), currentOrder.getClient_firstname())
         );
-        
+
         return convertView;
     }
 
