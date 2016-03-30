@@ -137,8 +137,8 @@ public abstract class OrdersFragment extends Fragment {
         } else if (itemId == R.id.action_get_map) {
             OrdersMapActivity_
                     .intent(this)
-                    .parcelableArrayListExtra(Operations.ORDERS_KEY, (ArrayList<? extends Parcelable>) getOrdersFromCache())
-                    .extra(Operations.CATEGORY_KEY, ordersCategory)
+                    .parcelableArrayListExtra(Operations.MAP_ACTIVITY_KEY_ORDERS_LIST, (ArrayList<? extends Parcelable>) getOrdersFromCache())
+                    .extra(Operations.MAP_ACTIVITY_KEY_ORDER_CATEGORY, ordersCategory)
                     .start();
         }
     }

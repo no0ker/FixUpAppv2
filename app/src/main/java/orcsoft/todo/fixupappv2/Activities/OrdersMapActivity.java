@@ -40,8 +40,8 @@ public class OrdersMapActivity extends FragmentActivity implements OnMapReadyCal
         setContentView(R.layout.activity_orders_map);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        orders = (List<Order>) getIntent().getExtras().get(Operations.ORDERS_KEY);
-        ordersCategory = (Order.Category) getIntent().getExtras().get(Operations.CATEGORY_KEY);
+        orders = (List<Order>) getIntent().getExtras().get(Operations.MAP_ACTIVITY_KEY_ORDERS_LIST);
+        ordersCategory = (Order.Category) getIntent().getExtras().get(Operations.MAP_ACTIVITY_KEY_ORDER_CATEGORY);
     }
 
     @Override
