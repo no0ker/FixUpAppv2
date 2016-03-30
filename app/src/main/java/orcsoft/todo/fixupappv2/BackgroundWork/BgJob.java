@@ -49,6 +49,11 @@ public class BgJob extends Job {
         OpenHelperManager.releaseHelper();
         ordersDatabaseHelper = null;
 
+        if (orders == null
+                || ordersFromCache == null) {
+            return null;
+        }
+
         orders.removeAll(ordersFromCache);
 
         if (!orders.isEmpty()) {
@@ -57,6 +62,7 @@ public class BgJob extends Job {
 
             Intent notificationIntent = new Intent(getContext(), MenuActivity_.class);
             notificationIntent.putExtra(Operations.MENU_ACTIVITY_KEY_CHANGE_FRAGMENT_ID, R.id.menu_orders_free);
+            notificationIntent.putExtra(Operations.ORDERS_FRAGMENT_WITH_RELOAD, Operations.YES);
             PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
             Notification notification = builder.setSmallIcon(R.drawable.ic_alarm_black_24dp)
@@ -70,8 +76,7 @@ public class BgJob extends Job {
 
             NotificationManager notificationManager = (NotificationManager) getContext()
                     .getSystemService(Context.NOTIFICATION_SERVICE);
-            notificationManager.notify(101, notification);
-
+            notificationManager.notify(1, notification);
         }
 
         return null;
