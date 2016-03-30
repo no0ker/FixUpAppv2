@@ -120,16 +120,8 @@ public class OrdersExpListAdapter extends BaseExpandableListAdapter {
         ((TextView) convertView.findViewById(R.id.list_name)).setText(
                 MessageFormat.format("{0}  {1}", currentOrder.getClient_lastname(), currentOrder.getClient_firstname())
         );
-
-        applyCategoryRules(convertView);
-
+        
         return convertView;
-    }
-
-    private void applyCategoryRules(View convertView) {
-        if(Order.Category.DONE.equals(ordersCategory)){
-            convertView.findViewById(R.id.list_exp_view).setVisibility(View.GONE);
-        }
     }
 
     @Override
