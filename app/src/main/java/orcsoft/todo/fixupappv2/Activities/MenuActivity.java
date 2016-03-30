@@ -16,9 +16,6 @@ import android.view.MenuItem;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 
-import java.util.Map;
-
-import orcsoft.todo.fixupappv2.Entity.Container;
 import orcsoft.todo.fixupappv2.Entity.Order;
 import orcsoft.todo.fixupappv2.Fragments.ActiveOrdersFragment_;
 import orcsoft.todo.fixupappv2.Fragments.ArchiveOrderFragments_;
@@ -67,8 +64,19 @@ public class MenuActivity extends AppCompatActivity implements NavigationView.On
                 currentFragment = savedInstanceState.getInt(currentFragmenKey);
                 menuListener(currentFragment, bundle);
             }
+        } else if (bundle.containsKey(Operations.MENU_ACTIVITY_KEY_CHANGE_FRAGMENT_ID)) {
+            menuListener((Integer) bundle.get(Operations.MENU_ACTIVITY_KEY_CHANGE_FRAGMENT_ID), bundle);
         } else {
             menuListener(R.id.menu_orders_active, bundle);
+        }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        Bundle bundle = intent.getExtras();
+        if (null != bundle && bundle.containsKey(Operations.MENU_ACTIVITY_KEY_CHANGE_FRAGMENT_ID)) {
+            menuListener((Integer) bundle.get(Operations.MENU_ACTIVITY_KEY_CHANGE_FRAGMENT_ID), bundle);
         }
     }
 
@@ -106,33 +114,19 @@ public class MenuActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void onFragmentInteraction(Container container) {
-        Map<String, Object> params = container.parameters;
-        if (params.containsKey(Operations.OPERATION)) {
-            String operationName = (String) params.get(Operations.OPERATION);
-
-            if (Operations.CHANGE_FRAGMENT.equals(operationName)) {
-                if (params.containsKey(Operations.ID)) {
-                    int id = (int) params.get(Operations.ID);
-                    menuListener(id);
-                } else if (params.containsKey(Operations.ACTIVITY_NAME)) {
-                    String activityName = (String) params.get(Operations.ACTIVITY_NAME);
-                    if (Operations.ORDERS_CLOSING_ACTIVITY.equals(activityName)) {
-                        Order currentOrder = (Order) params.get(Operations.ORDER_ENTITY);
-                        OrderClosingActivity_
-                                .intent(getApplicationContext())
-                                .extra(Operations.ORDER_ENTITY, currentOrder)
-                                .flags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                .start();
-                    }
-
-                } else if (params.containsKey(Operations.FRAGMENT_ID)) {
-                    Integer newFragmentId = (Integer) params.get(Operations.FRAGMENT_ID);
-                    Bundle bundle = new Bundle();
-                    bundle.putString(Operations.WITH_RELOAD, Operations.YES);
-                    menuListener(newFragmentId, bundle);
-                }
+    public void onFragmentInteraction(Bundle bundle) {
+        if (bundle.containsKey(Operations.MENU_ACTIVITY_KEY_START_OTHER_ACTIVITY)) {
+            if (Operations.ORDER_CLOSING_ACTIVITY_ID.equals(bundle.get(Operations.MENU_ACTIVITY_KEY_START_OTHER_ACTIVITY))) {
+                Order currentOrder = (Order) bundle.get(Operations.ORDER_ENTITY);
+                OrderClosingActivity_
+                        .intent(getApplicationContext())
+                        .extra(Operations.ORDER_ENTITY, currentOrder)
+                        .flags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        .start();
             }
+        } else if (bundle.containsKey(Operations.MENU_ACTIVITY_KEY_CHANGE_FRAGMENT_ID)) {
+            int id = (int) bundle.get(Operations.MENU_ACTIVITY_KEY_CHANGE_FRAGMENT_ID);
+            menuListener(id, bundle);
         }
     }
 
@@ -189,7 +183,9 @@ public class MenuActivity extends AppCompatActivity implements NavigationView.On
             FragmentManager fragmentManager = getSupportFragmentManager();
             Fragment lostFragment = fragmentManager.findFragmentByTag("TAG");
             if (lostFragment != null && lostFragment.getClass().equals(fragment.getClass())) {
-                // do nothing
+                if (bundle.containsKey(Operations.ORDER_FRAGMENT_KEY_LONG_CLICK_ORDER_ID)) {
+                    ((OrdersFragment) lostFragment).onLongClickMakeAlertDialog((Integer) bundle.get(Operations.ORDER_FRAGMENT_KEY_LONG_CLICK_ORDER_ID));
+                }
             } else {
                 fragmentManager
                         .beginTransaction()

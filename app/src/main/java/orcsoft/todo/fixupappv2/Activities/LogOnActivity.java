@@ -69,7 +69,7 @@ public class LogOnActivity extends AppCompatActivity {
             prefs.accessToken().put(accessToken);
             MenuActivity_.intent(this)
                     .flags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                    .extra(Operations.WITH_RELOAD, Operations.YES).start();
+                    .extra(Operations.ORDERS_FRAGMENT_WITH_RELOAD, Operations.YES).start();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (NetException e) {

@@ -21,11 +21,6 @@ public class ArchiveOrderFragments extends OrdersFragment{
     }
 
     @Override
-    protected void onLongClickMakeAlertDialog(Order order) {
-
-    }
-
-    @Override
     protected List<Order> getOrders() throws IOException, NetException {
         List<Order> newOrders = netHelper.getArchiveOrders();
         addOrdersToDBCache(newOrders, ordersCategory);
@@ -35,5 +30,10 @@ public class ArchiveOrderFragments extends OrdersFragment{
     @Override
     protected List<Order> getOrdersFromCache() {
         return getOrdersFromCache(ordersCategory);
+    }
+
+    @Override
+    protected void onLongClickMakeAlertDialog(Order order) {
+        // do nothing
     }
 }

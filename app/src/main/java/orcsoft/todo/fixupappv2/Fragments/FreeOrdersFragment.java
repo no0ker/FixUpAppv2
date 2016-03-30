@@ -4,19 +4,21 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.widget.LinearLayout;
 import android.widget.TimePicker;
 
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.UiThread;
+import org.androidannotations.annotations.ViewById;
 
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.List;
 
-import orcsoft.todo.fixupappv2.Entity.Container;
 import orcsoft.todo.fixupappv2.Entity.Order;
 import orcsoft.todo.fixupappv2.Exceptions.NetException;
 import orcsoft.todo.fixupappv2.Operations;
@@ -24,6 +26,8 @@ import orcsoft.todo.fixupappv2.R;
 
 @EFragment(R.layout.fragment_orders)
 public class FreeOrdersFragment extends OrdersFragment {
+    @ViewById(R.id.parent_layout)
+    LinearLayout parentVoew;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,23 +39,21 @@ public class FreeOrdersFragment extends OrdersFragment {
     protected void setAccept(int orderId, String time) {
         try {
             netHelper.setAccept(orderId, time);
+            changeFragmentToActive();
         } catch (Exception e) {
-            e.printStackTrace();
+            Snackbar.make(parentVoew, e.getMessage(), Snackbar.LENGTH_LONG);
         }
-        changeFragmentToActive();
     }
 
     @UiThread
     protected void changeFragmentToActive() {
         onOptionsItemSelected(R.id.action_update);
-        mListener.onFragmentInteraction(new Container() {{
-                                            parameters.put(Operations.OPERATION, Operations.CHANGE_FRAGMENT);
-                                            parameters.put(Operations.FRAGMENT_ID, R.id.menu_orders_active);
-                                            parameters.put(Operations.WITH_RELOAD, Operations.YES);
-                                        }}
-        );
-    }
+        Bundle bundle = new Bundle();
+        bundle.putInt(Operations.MENU_ACTIVITY_KEY_CHANGE_FRAGMENT_ID, R.id.menu_orders_active);
+        bundle.putString(Operations.ORDERS_FRAGMENT_WITH_RELOAD, Operations.YES);
 
+        mListener.onFragmentInteraction(bundle);
+    }
 
     @Override
     protected void onLongClickMakeAlertDialog(final Order order) {

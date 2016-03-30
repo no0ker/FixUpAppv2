@@ -33,7 +33,6 @@ import java.util.List;
 import orcsoft.todo.fixupappv2.Activities.OrdersMapActivity_;
 import orcsoft.todo.fixupappv2.Adapters.OrdersExpListAdapter;
 import orcsoft.todo.fixupappv2.DBHelpers.OrdersDatabaseHelper;
-import orcsoft.todo.fixupappv2.Entity.Container;
 import orcsoft.todo.fixupappv2.Entity.Order;
 import orcsoft.todo.fixupappv2.Exceptions.NetException;
 import orcsoft.todo.fixupappv2.Operations;
@@ -63,7 +62,7 @@ public abstract class OrdersFragment extends Fragment {
     protected ProgressBar progressBar;
 
     public static interface OnFragmentInteractionListener {
-        void onFragmentInteraction(Container container);
+        void onFragmentInteraction(Bundle bundle);
     }
 
     public OrdersFragment() {
@@ -79,7 +78,7 @@ public abstract class OrdersFragment extends Fragment {
         setHasOptionsMenu(true);
         if (getArguments() != null) {
             Bundle bundle = getArguments();
-            if (Operations.YES.equals(bundle.getString(Operations.WITH_RELOAD))) {
+            if (Operations.YES.equals(bundle.getString(Operations.ORDERS_FRAGMENT_WITH_RELOAD))) {
                 onOptionsItemSelected(R.id.action_update);
             }
         }
@@ -230,5 +229,13 @@ public abstract class OrdersFragment extends Fragment {
         OpenHelperManager.releaseHelper();
         ordersDatabaseHelper = null;
         return result;
+    }
+
+    public void onLongClickMakeAlertDialog(Integer orderId){
+        for(Order order : getOrdersFromCache()){
+            if(order.getId().equals(orderId)){
+                onLongClickMakeAlertDialog(order);
+            }
+        }
     }
 }

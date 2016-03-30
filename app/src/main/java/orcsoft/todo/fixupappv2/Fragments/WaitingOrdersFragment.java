@@ -21,7 +21,7 @@ public class WaitingOrdersFragment extends OrdersFragment{
 
     @Override
     protected void onLongClickMakeAlertDialog(Order order) {
-
+        // do nothing
     }
 
     @Override

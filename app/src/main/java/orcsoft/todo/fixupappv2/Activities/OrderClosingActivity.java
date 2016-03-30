@@ -170,10 +170,10 @@ public class OrderClosingActivity extends AppCompatActivity implements AbstractI
                 Snackbar.make(parentLaoyut, responseMessage.code + " " + responseMessage.message, Snackbar.LENGTH_LONG).show();
             } else {
                 Bundle bundle = new Bundle();
-                bundle.putString(Operations.WITH_RELOAD, Operations.YES);
+                bundle.putString(Operations.ORDERS_FRAGMENT_WITH_RELOAD, Operations.YES);
                 MenuActivity_.intent(this)
                         .flags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                        .extra(Operations.WITH_RELOAD, Operations.YES)
+                        .extra(Operations.ORDERS_FRAGMENT_WITH_RELOAD, Operations.YES)
                         .start();
 
             }

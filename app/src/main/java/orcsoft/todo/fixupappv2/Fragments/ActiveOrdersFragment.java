@@ -11,7 +11,6 @@ import org.androidannotations.annotations.EFragment;
 import java.io.IOException;
 import java.util.List;
 
-import orcsoft.todo.fixupappv2.Entity.Container;
 import orcsoft.todo.fixupappv2.Entity.Order;
 import orcsoft.todo.fixupappv2.Exceptions.NetException;
 import orcsoft.todo.fixupappv2.Operations;
@@ -29,20 +28,19 @@ public class ActiveOrdersFragment extends OrdersFragment {
     @Override
     protected void onLongClickMakeAlertDialog(final Order order) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
         builder.setTitle("Операции")
-                .setMessage("Изволите закрыть заявку?")
-                .setPositiveButton("Ага", new DialogInterface.OnClickListener() {
+                .setMessage("Уверены, что хотите закрыть заявку?")
+                .setPositiveButton("Да", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        mListener.onFragmentInteraction(new Container() {{
-                                                            parameters.put(Operations.OPERATION, Operations.CHANGE_FRAGMENT);
-                                                            parameters.put(Operations.ACTIVITY_NAME, Operations.ORDERS_CLOSING_ACTIVITY);
-                                                            parameters.put(Operations.ORDER_ENTITY, order);
-                                                        }}
-                        );
+                        Bundle bundle = new Bundle();
+                        bundle.putString(Operations.MENU_ACTIVITY_KEY_START_OTHER_ACTIVITY, Operations.ORDER_CLOSING_ACTIVITY_ID);
+                        bundle.putParcelable(Operations.ORDER_ENTITY, order);
+                        mListener.onFragmentInteraction(bundle);
                     }
                 })
-                .setNegativeButton("Неа", new DialogInterface.OnClickListener() {
+                .setNegativeButton("Нет", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();

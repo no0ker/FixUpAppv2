@@ -1,8 +1,6 @@
 package orcsoft.todo.fixupappv2.Activities;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
@@ -77,44 +75,63 @@ public class OrdersMapActivity extends FragmentActivity implements OnMapReadyCal
                 mMap.addMarker(
                         new MarkerOptions()
                                 .position(point)
-                                .title(ordersCategory.toString().substring(0, 1) + "-" + o.getAddress()));
+                                .title("(" + ordersCategory.toString().substring(0, 1) + ")" + o.getAddress()));
             }
         }
 
-        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+//        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+//            @Override
+//            public boolean onMarkerClick(Marker marker) {
+//                String markerCategory = marker.getTitle().substring(0, 1);
+//                final String address = marker.getTitle().substring(2);
+//                Order currentOrder = getOrder(address);
+//
+//                AlertDialog.Builder builder = new AlertDialog.Builder(OrdersMapActivity.this);
+//
+//                if ("A".equals(markerCategory)) {
+//                    builder.setTitle("Операции")
+//                            .setMessage("Изволите закрыть заявку?")
+//                            .setTitle(marker.getTitle())
+//                            .setPositiveButton("Ага", new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialog, int which) {
+//                                    OrderClosingActivity_
+//                                            .intent(context)
+//                                            .extra(Operations.ORDER_ENTITY, currentOrder)
+//                                            .flags(Intent.FLAG_ACTIVITY_NEW_TASK)
+//                                            .start();
+//                                }
+//                            })
+//                            .setNegativeButton("Неа", new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialog, int which) {
+//                                    dialog.cancel();
+//                                }
+//                            });
+//                    builder.create().show();
+//                } else if ("F".equals(markerCategory)) {
+//                    // TODO нужно вызвать MenuActivity и вызвать там long Click
+//                    MenuActivity_.intent(context)
+//                            .extra(Operations.MENU_ACTIVITY_KEY_CHANGE_FRAGMENT_ID, R.id.menu_orders_free)
+//                            .extra(Operations.ORDER_FRAGMENT_KEY_LONG_CLICK_ORDER_ID, currentOrder.getId())
+//                            .start();
+//                }
+//                return false;
+//            }
+//        });
+        mMap.setOnInfoWindowLongClickListener(new GoogleMap.OnInfoWindowLongClickListener() {
             @Override
-            public boolean onMarkerClick(Marker marker) {
-                String markerCategory = marker.getTitle().substring(0, 1);
-                final String address = marker.getTitle().substring(2);
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(OrdersMapActivity.this);
-
-                if ("A".equals(markerCategory)) {
-                    builder.setTitle("Операции")
-                            .setMessage("Изволите закрыть заявку?")
-                            .setTitle(marker.getTitle())
-                            .setPositiveButton("Ага", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    Order currentOrder = getOrder(address);
-                                    OrderClosingActivity_
-                                            .intent(context)
-                                            .extra(Operations.ORDER_ENTITY, currentOrder)
-                                            .flags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                            .start();
-                                }
-                            })
-                            .setNegativeButton("Неа", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.cancel();
-                                }
-                            });
-                    builder.create().show();
-                } else if ("F".equals(markerCategory)) {
-                    // TODO нужно вызвать MenuActivity и вызвать там long Click
+            public void onInfoWindowLongClick(Marker marker) {
+                String markerCategory = marker.getTitle().substring(1, 2);
+                final String address = marker.getTitle().substring(3);
+                Order currentOrder = getOrder(address);
+                if ("F".equals(markerCategory)) {
+                    MenuActivity_.intent(context)
+                            .extra(Operations.MENU_ACTIVITY_KEY_CHANGE_FRAGMENT_ID, R.id.menu_orders_free)
+                            .extra(Operations.ORDER_FRAGMENT_KEY_LONG_CLICK_ORDER_ID, currentOrder.getId())
+                            .flags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            .start();
                 }
-                return false;
             }
         });
     }
