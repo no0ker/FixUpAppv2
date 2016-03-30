@@ -5,19 +5,19 @@
         <menu>
             <item
                 android:id="@+id/menu_orders_active"
-                android:icon="@drawable/ic_menu_share"
+                android:icon="@drawable/ic_accessibility_black_24dp"
                 android:title="@string/menu_orders_active" />
             <item
                 android:id="@+id/menu_orders_free"
-                android:icon="@drawable/ic_menu_send"
+                android:icon="@drawable/ic_system_update_alt_black_24dp"
                 android:title="@string/menu_orders_free" />
             <item
                 android:id="@+id/menu_orders_waiting"
-                android:icon="@drawable/ic_menu_share"
+                android:icon="@drawable/ic_schedule_black_24dp"
                 android:title="@string/menu_orders_waiting" />
             <item
                 android:id="@+id/menu_orders_archive"
-                android:icon="@drawable/ic_menu_share"
+                android:icon="@drawable/ic_delete"
                 android:title="@string/menu_orders_archive" />
         </menu>
     </item>
