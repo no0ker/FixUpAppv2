@@ -32,6 +32,7 @@ public class PreferencesActivity extends PreferenceActivity {
         prefs.accessToken().put("");
     }
 
+    
     @PreferenceChange(R.string.pref_system_bg)
     void bgChanged() {
         boolean isEnabledBg = prefs.getSharedPreferences().getBoolean(
