@@ -2,8 +2,6 @@ package orcsoft.todo.fixupappv2.Activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
@@ -19,13 +17,15 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.UiThread;
 
-import java.io.IOException;
 import java.util.List;
 
+import orcsoft.todo.fixupappv2.Entity.GeoPoint;
 import orcsoft.todo.fixupappv2.Entity.Order;
 import orcsoft.todo.fixupappv2.Operations;
 import orcsoft.todo.fixupappv2.R;
+import orcsoft.todo.fixupappv2.Utils.GeoCoderHelper;
 import orcsoft.todo.fixupappv2.Utils.NetHelper_;
 
 @EActivity
@@ -33,6 +33,7 @@ public class OrdersMapActivity extends FragmentActivity implements OnMapReadyCal
     private List<Order> orders;
     private GoogleMap mMap;
     private Order.Category ordersCategory;
+    private GeoCoderHelper geoCoderHelper = new GeoCoderHelper();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,38 +48,47 @@ public class OrdersMapActivity extends FragmentActivity implements OnMapReadyCal
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        try {
-            initCamera();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        initMap(orders);
     }
 
-    private void initCamera() throws IOException {
-        Geocoder geocoder = new Geocoder(this);
-        final Context context = getApplicationContext();
-        Address saratov = geocoder.getFromLocationName("Саратов", 1).get(0);
+    @Background
+    protected void initMap(List<Order> orders) {
+        GeoPoint saratov = geoCoderHelper.getGeoPoint("г. Саратов");
+        setCamera(saratov);
+
+        for (Order o : orders) {
+            GeoPoint address = geoCoderHelper.getGeoPoint(o.getAddress());
+            setMarker(address, o.getAddress());
+        }
+
+        setListeners();
+    }
+
+    @UiThread
+    protected void setCamera(GeoPoint center) {
         CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(new LatLng(saratov.getLatitude(), saratov.getLongitude()))
+                .target(new LatLng(center.getLatitude(), center.getLongitude()))
                 .zoom(11)
                 .tilt(20)
                 .build();
         CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);
         mMap.animateCamera(cameraUpdate);
-
         mMap.getUiSettings().setZoomControlsEnabled(true);
+    }
 
-        for (Order o : orders) {
-            List<Address> address = geocoder.getFromLocationName(o.getAddress(), 1);
-            if (address.size() >= 1) {
-                LatLng point = new LatLng(address.get(0).getLatitude(), address.get(0).getLongitude());
-                mMap.addMarker(
-                        new MarkerOptions()
-                                .position(point)
-                                .title("(" + ordersCategory.toString().substring(0, 1) + ")" + o.getAddress()));
-            }
-        }
+    @UiThread
+    protected void setMarker(GeoPoint markerPoint, String name) {
+        LatLng point = new LatLng(markerPoint.getLatitude(), markerPoint.getLongitude());
+        mMap.addMarker(
+                new MarkerOptions()
+                        .position(point)
+                        .title("(" + ordersCategory.toString().substring(0, 1) + ")" + name));
 
+    }
+
+    @UiThread
+    protected void setListeners() {
+        final Context context = getApplicationContext();
         mMap.setOnInfoWindowLongClickListener(new GoogleMap.OnInfoWindowLongClickListener() {
             @Override
             public void onInfoWindowLongClick(Marker marker) {
@@ -91,7 +101,7 @@ public class OrdersMapActivity extends FragmentActivity implements OnMapReadyCal
                             .extra(Operations.ORDER_FRAGMENT_KEY_LONG_CLICK_ORDER_ID, currentOrder.getId())
                             .flags(Intent.FLAG_ACTIVITY_NEW_TASK)
                             .start();
-                } else  if ("A".equals(markerCategory)){
+                } else if ("A".equals(markerCategory)) {
                     MenuActivity_.intent(context)
                             .extra(Operations.MENU_ACTIVITY_KEY_CHANGE_FRAGMENT_ID, R.id.menu_orders_active)
                             .extra(Operations.ORDER_FRAGMENT_KEY_LONG_CLICK_ORDER_ID, currentOrder.getId())
