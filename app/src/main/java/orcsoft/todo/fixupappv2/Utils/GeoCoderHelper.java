@@ -1,54 +1,72 @@
 package orcsoft.todo.fixupappv2.Utils;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import org.androidannotations.annotations.EBean;
+import org.androidannotations.annotations.RootContext;
 import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
+import java.io.IOException;
+import java.io.StringReader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import orcsoft.todo.fixupappv2.Exceptions.NetException;
+
+@EBean
 public class GeoCoderHelper {
-    private final String baseAddress = "https://geocode-maps.yandex.ru/1.x/?geocode=";
-    public final String TAG = GeoCoderHelper.class.toString();
+    @RootContext
+    Context context;
 
-    public LatLng getGeoPoint(String address) {
-        try {
-            address = address.replaceAll("\\s", "+");
-            URL url = new URL(baseAddress + URLEncoder.encode(address, "UTF-8"));
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
+    private static final String baseAddress = "https://geocode-maps.yandex.ru/1.x/?geocode=";
+    public static final String TAG = GeoCoderHelper.class.toString();
 
-            if (200 != connection.getResponseCode()) {
-                throw new Exception("ошибка при получении координат. код ошибки" + connection.getResponseCode());
-            }
+    public LatLng getGeoPoint(String address) throws IOException, NetException, ParserConfigurationException, SAXException {
+        OkHttpClient okHttpClient = NetHelper_.getInstance_(context).getOkHttpClient();
 
-            SAXParserFactory factory = SAXParserFactory.newInstance();
-            SAXParser parser = factory.newSAXParser();
-            mySaxparser saxp = new mySaxparser();
-            parser.parse(connection.getInputStream(), saxp);
-            String parsedRsult = saxp.getValue();
-            Pattern pattern = Pattern.compile("(\\d+.\\d+)\\s(\\d+.\\d+)");
-            Matcher matchsr = pattern.matcher(parsedRsult);
-            if (matchsr.matches()) {
-                double longitude = Double.parseDouble(matchsr.group(1));
-                double latitude = Double.parseDouble(matchsr.group(2));
-                LatLng result = new LatLng(latitude, longitude);
-                Log.d(TAG, result.longitude + "  " + result.latitude + "  " + address);
-                return result;
-            }
-        } catch (Exception e) {
-            Log.d(TAG, Log.getStackTraceString(e));
+        Request request = new Request.Builder()
+                .url(baseAddress + address)
+                .build();
+
+        Response response = okHttpClient.newCall(request).execute();
+        String responseBody = response.body().string();
+        if (200 != response.code()) {
+            throw new NetException(response.code(), "ошибка при получении координат");
         }
+
+        SAXParserFactory factory = SAXParserFactory.newInstance();
+        SAXParser parser = factory.newSAXParser();
+        mySaxparser saxp = new mySaxparser();
+
+        parser.parse(
+                new InputSource(new StringReader(responseBody)),
+                saxp);
+
+        String parsedRsult = saxp.getValue();
+
+        Pattern pattern = Pattern.compile("(\\d+.\\d+)\\s(\\d+.\\d+)");
+        Matcher matchsr = pattern.matcher(parsedRsult);
+        if (matchsr.matches()) {
+            double longitude = Double.parseDouble(matchsr.group(1));
+            double latitude = Double.parseDouble(matchsr.group(2));
+            LatLng result = new LatLng(latitude, longitude);
+            Log.d(TAG, result.longitude + "  " + result.latitude + "  " + address);
+            return result;
+        }
+
         return null;
     }
 

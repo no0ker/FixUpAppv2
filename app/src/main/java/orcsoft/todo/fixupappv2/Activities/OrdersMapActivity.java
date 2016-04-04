@@ -25,6 +25,7 @@ import orcsoft.todo.fixupappv2.Entity.Order;
 import orcsoft.todo.fixupappv2.Operations;
 import orcsoft.todo.fixupappv2.R;
 import orcsoft.todo.fixupappv2.Utils.GeoCoderHelper;
+import orcsoft.todo.fixupappv2.Utils.GeoCoderHelper_;
 import orcsoft.todo.fixupappv2.Utils.NetHelper_;
 
 @EActivity
@@ -32,7 +33,7 @@ public class OrdersMapActivity extends FragmentActivity implements OnMapReadyCal
     private List<Order> orders;
     private GoogleMap mMap;
     private Order.Category ordersCategory;
-    private GeoCoderHelper geoCoderHelper = new GeoCoderHelper();
+    private GeoCoderHelper geoCoderHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +43,7 @@ public class OrdersMapActivity extends FragmentActivity implements OnMapReadyCal
         mapFragment.getMapAsync(this);
         orders = (List<Order>) getIntent().getExtras().get(Operations.MAP_ACTIVITY_KEY_ORDERS_LIST);
         ordersCategory = (Order.Category) getIntent().getExtras().get(Operations.MAP_ACTIVITY_KEY_ORDER_CATEGORY);
+        geoCoderHelper = GeoCoderHelper_.getInstance_(this);
     }
 
     @Override
@@ -52,7 +54,7 @@ public class OrdersMapActivity extends FragmentActivity implements OnMapReadyCal
 
     @Background
     protected void initMap(List<Order> orders) {
-        LatLng saratov = geoCoderHelper.getGeoPoint("г. Саратов");
+        LatLng saratov = new LatLng(51.533103, 46.034158);
         setCamera(saratov);
 
         for (Order o : orders) {

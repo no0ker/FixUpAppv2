@@ -38,7 +38,7 @@ import orcsoft.todo.fixupappv2.Entity.Order;
 import orcsoft.todo.fixupappv2.Exceptions.NetException;
 import orcsoft.todo.fixupappv2.Operations;
 import orcsoft.todo.fixupappv2.R;
-import orcsoft.todo.fixupappv2.Utils.GeoCoderHelper;
+import orcsoft.todo.fixupappv2.Utils.GeoCoderHelper_;
 import orcsoft.todo.fixupappv2.Utils.NetHelper;
 import orcsoft.todo.fixupappv2.Utils.NetHelper_;
 
@@ -150,10 +150,15 @@ public abstract class OrdersFragment extends Fragment {
         for (Order o : orders) {
             if (o.getLatitude() == null || o.getLatitude() == null
                     || o.getLatitude() == 0.0 || o.getLongitude() == 0.0) {
-                LatLng address = new GeoCoderHelper().getGeoPoint(o.getAddress());
-                o.setLatitude(address.latitude);
-                o.setLongitude(address.longitude);
-                needToAddOrdersToDBCache = true;
+                LatLng address = null;
+                try {
+                    address = GeoCoderHelper_.getInstance_(getContext()).getGeoPoint(o.getAddress());
+                    o.setLatitude(address.latitude);
+                    o.setLongitude(address.longitude);
+                    needToAddOrdersToDBCache = true;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
         if (needToAddOrdersToDBCache) {

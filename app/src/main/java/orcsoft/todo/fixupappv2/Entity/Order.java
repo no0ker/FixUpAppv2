@@ -203,7 +203,13 @@ public class Order implements Parcelable {
                 cost,
                 category.name()});
         dest.writeInt(id);
+        if(latitude == null){
+            latitude = 0.0;
+        }
         dest.writeDouble(latitude);
+        if(longitude == null){
+            longitude = 0.0;
+        }
         dest.writeDouble(longitude);
     }
 
