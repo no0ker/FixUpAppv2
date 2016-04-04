@@ -16,9 +16,7 @@ public class Order implements Parcelable {
     public static DateFormat SDF_DATETIME_WORKS = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
     public static DateFormat SDF_DATE_TIME = new SimpleDateFormat("dd MMMM hh:mm");
 
-    public static enum Category {FREE, ACTIVE, DONE, ARCHIVE}
-
-    ;
+    public static enum Category {FREE, ACTIVE, DONE, ARCHIVE};
 
     @DatabaseField(id = true)
     private Integer id;
@@ -50,6 +48,12 @@ public class Order implements Parcelable {
     @DatabaseField
     private Category category;
 
+    @DatabaseField
+    private Double longitude;
+
+    @DatabaseField
+    private Double latitude;
+
     public Order() {
     }
 
@@ -69,6 +73,8 @@ public class Order implements Parcelable {
                 category = Category.valueOf(array[8]);
             }
             id = source.readInt();
+            latitude = source.readDouble();
+            longitude = source.readDouble();
         }
     }
 
@@ -152,6 +158,22 @@ public class Order implements Parcelable {
         this.category = category;
     }
 
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
     @Override
     public String toString() {
         return "Order{" +
@@ -181,6 +203,8 @@ public class Order implements Parcelable {
                 cost,
                 category.name()});
         dest.writeInt(id);
+        dest.writeDouble(latitude);
+        dest.writeDouble(longitude);
     }
 
     public static final Parcelable.Creator<Order> CREATOR = new Creator<Order>() {

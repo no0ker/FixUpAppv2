@@ -53,7 +53,7 @@ public class NetHelper {
 
     private static OkHttpClient okHttpClient;
 
-    private static OkHttpClient getOkHttpClient() {
+    public static OkHttpClient getOkHttpClient() {
         if (okHttpClient == null) {
             okHttpClient = new OkHttpClient();
         }

@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.ProgressBar;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.DeleteBuilder;
@@ -37,6 +38,7 @@ import orcsoft.todo.fixupappv2.Entity.Order;
 import orcsoft.todo.fixupappv2.Exceptions.NetException;
 import orcsoft.todo.fixupappv2.Operations;
 import orcsoft.todo.fixupappv2.R;
+import orcsoft.todo.fixupappv2.Utils.GeoCoderHelper;
 import orcsoft.todo.fixupappv2.Utils.NetHelper;
 import orcsoft.todo.fixupappv2.Utils.NetHelper_;
 
@@ -52,7 +54,9 @@ public abstract class OrdersFragment extends Fragment {
     protected AdapterView.OnItemLongClickListener onGroupLongClickListener;
 
     abstract protected List<Order> getOrders() throws IOException, NetException;
+
     abstract protected List<Order> getOrdersFromCache();
+
     abstract protected void onLongClickMakeAlertDialog(Order order);
 
     @ViewById(R.id.expandable_list_view)
@@ -96,6 +100,7 @@ public abstract class OrdersFragment extends Fragment {
         if (cacheOrders != null && !cacheOrders.isEmpty()) {
             ordersExpListAdapter.setOrders(cacheOrders);
             ordersExpListAdapter.notifyDataSetChanged();
+            orders = cacheOrders;
         }
     }
 
@@ -135,13 +140,33 @@ public abstract class OrdersFragment extends Fragment {
         if (itemId == R.id.action_update) {
             updateOrdersBg();
         } else if (itemId == R.id.action_get_map) {
-            OrdersMapActivity_
-                    .intent(this)
-                    .parcelableArrayListExtra(Operations.MAP_ACTIVITY_KEY_ORDERS_LIST, (ArrayList<? extends Parcelable>) getOrdersFromCache())
-                    .extra(Operations.MAP_ACTIVITY_KEY_ORDER_CATEGORY, ordersCategory)
-                    .start();
+            updateOrdersBgAndStartMapActivity(orders);
         }
     }
+
+    @Background
+    protected void updateOrdersBgAndStartMapActivity(List<Order> orders) {
+        boolean needToAddOrdersToDBCache = false;
+        for (Order o : orders) {
+            if (o.getLatitude() == null || o.getLatitude() == null
+                    || o.getLatitude() == 0.0 || o.getLongitude() == 0.0) {
+                LatLng address = new GeoCoderHelper().getGeoPoint(o.getAddress());
+                o.setLatitude(address.latitude);
+                o.setLongitude(address.longitude);
+                needToAddOrdersToDBCache = true;
+            }
+        }
+        if (needToAddOrdersToDBCache) {
+            addOrdersToDBCache(orders);
+        }
+        OrdersMapActivity_
+                .intent(this)
+                .parcelableArrayListExtra(Operations.MAP_ACTIVITY_KEY_ORDERS_LIST, (ArrayList<? extends Parcelable>) orders)
+                .extra(Operations.MAP_ACTIVITY_KEY_ORDER_CATEGORY, ordersCategory)
+                .start();
+
+    }
+
 
     // ---------------------------------------------------
 
@@ -198,6 +223,11 @@ public abstract class OrdersFragment extends Fragment {
         for (Order o : ordersForCache) {
             o.setCategory(category);
         }
+        addOrdersToDBCache(ordersForCache);
+    }
+
+    protected void addOrdersToDBCache(List<Order> ordersForCache) {
+        Order.Category category = ordersForCache.get(0).getCategory();
         OpenHelperManager.setOpenHelperClass(OrdersDatabaseHelper.class);
         OrdersDatabaseHelper ordersDatabaseHelper = OpenHelperManager.getHelper(getContext(), OrdersDatabaseHelper.class);
         try {
@@ -231,9 +261,9 @@ public abstract class OrdersFragment extends Fragment {
         return result;
     }
 
-    public void onLongClickMakeAlertDialog(Integer orderId){
-        for(Order order : getOrdersFromCache()){
-            if(order.getId().equals(orderId)){
+    public void onLongClickMakeAlertDialog(Integer orderId) {
+        for (Order order : getOrdersFromCache()) {
+            if (order.getId().equals(orderId)) {
                 onLongClickMakeAlertDialog(order);
             }
         }

@@ -14,7 +14,7 @@ import orcsoft.todo.fixupappv2.Entity.Order;
 
 public class OrdersDatabaseHelper extends OrmLiteSqliteOpenHelper {
     private static final String DATABASE_NAME = "orders";
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 6;
     private Dao<Order, Integer> ordersDao;
 
 

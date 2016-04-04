@@ -2,6 +2,8 @@ package orcsoft.todo.fixupappv2.Utils;
 
 import android.util.Log;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -15,14 +17,11 @@ import java.util.regex.Pattern;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import orcsoft.todo.fixupappv2.Entity.GeoPoint;
-
 public class GeoCoderHelper {
     private final String baseAddress = "https://geocode-maps.yandex.ru/1.x/?geocode=";
     public final String TAG = GeoCoderHelper.class.toString();
 
-    public GeoPoint getGeoPoint(String address) {
-        GeoPoint result = new GeoPoint();
+    public LatLng getGeoPoint(String address) {
         try {
             address = address.replaceAll("\\s", "+");
             URL url = new URL(baseAddress + URLEncoder.encode(address, "UTF-8"));
@@ -41,14 +40,16 @@ public class GeoCoderHelper {
             Pattern pattern = Pattern.compile("(\\d+.\\d+)\\s(\\d+.\\d+)");
             Matcher matchsr = pattern.matcher(parsedRsult);
             if (matchsr.matches()) {
-                result.setLongitude(Double.parseDouble(matchsr.group(1)));
-                result.setLatitude(Double.parseDouble(matchsr.group(2)));
-                Log.d(TAG, result.getLongitude() + "  " + result.getLatitude() + "  " + address);
+                double longitude = Double.parseDouble(matchsr.group(1));
+                double latitude = Double.parseDouble(matchsr.group(2));
+                LatLng result = new LatLng(latitude, longitude);
+                Log.d(TAG, result.longitude + "  " + result.latitude + "  " + address);
+                return result;
             }
         } catch (Exception e) {
             Log.d(TAG, Log.getStackTraceString(e));
         }
-        return result;
+        return null;
     }
 
     private class mySaxparser extends DefaultHandler {

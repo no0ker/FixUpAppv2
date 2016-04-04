@@ -21,7 +21,6 @@ import org.androidannotations.annotations.UiThread;
 
 import java.util.List;
 
-import orcsoft.todo.fixupappv2.Entity.GeoPoint;
 import orcsoft.todo.fixupappv2.Entity.Order;
 import orcsoft.todo.fixupappv2.Operations;
 import orcsoft.todo.fixupappv2.R;
@@ -53,21 +52,20 @@ public class OrdersMapActivity extends FragmentActivity implements OnMapReadyCal
 
     @Background
     protected void initMap(List<Order> orders) {
-        GeoPoint saratov = geoCoderHelper.getGeoPoint("г. Саратов");
+        LatLng saratov = geoCoderHelper.getGeoPoint("г. Саратов");
         setCamera(saratov);
 
         for (Order o : orders) {
-            GeoPoint address = geoCoderHelper.getGeoPoint(o.getAddress());
-            setMarker(address, o.getAddress());
+            setMarker(o, o.getAddress());
         }
 
         setListeners();
     }
 
     @UiThread
-    protected void setCamera(GeoPoint center) {
+    protected void setCamera(LatLng center) {
         CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(new LatLng(center.getLatitude(), center.getLongitude()))
+                .target(center)
                 .zoom(11)
                 .tilt(20)
                 .build();
@@ -77,11 +75,10 @@ public class OrdersMapActivity extends FragmentActivity implements OnMapReadyCal
     }
 
     @UiThread
-    protected void setMarker(GeoPoint markerPoint, String name) {
-        LatLng point = new LatLng(markerPoint.getLatitude(), markerPoint.getLongitude());
+    protected void setMarker(Order orderForPoint, String name) {
         mMap.addMarker(
                 new MarkerOptions()
-                        .position(point)
+                        .position(new LatLng(orderForPoint.getLatitude(), orderForPoint.getLongitude()))
                         .title("(" + ordersCategory.toString().substring(0, 1) + ")" + name));
 
     }
